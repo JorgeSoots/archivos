@@ -5,74 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Frecuencia Retro – Countdown</title>
 <style>
-  
-/* =========================================
-   FRECUENCIA RETRO - EXTENSION DE FONDO
-   ========================================= */
 
-html {
-  background: #160a45;
-}
-
-body {
-  background: transparent !important;
-  position: relative;
-  isolation: isolate;
-}
-
-/* Escenario ambiental que ocupa toda la pantalla */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-
-  background:
-    /* Estrellas */
-    radial-gradient(circle at 5% 15%, #ffffff 0 1px, transparent 1.8px),
-    radial-gradient(circle at 12% 37%, #b9a5ff 0 1px, transparent 2px),
-    radial-gradient(circle at 8% 68%, #ffffff 0 1px, transparent 1.8px),
-    radial-gradient(circle at 17% 85%, #7a4bff 0 1px, transparent 2px),
-    radial-gradient(circle at 94% 18%, #ffffff 0 1px, transparent 1.8px),
-    radial-gradient(circle at 88% 43%, #a47aff 0 1px, transparent 2px),
-    radial-gradient(circle at 96% 73%, #ffffff 0 1px, transparent 1.8px),
-    radial-gradient(circle at 83% 88%, #713cff 0 1px, transparent 2px),
-
-    /* Nebulosas violetas */
-    radial-gradient(
-      ellipse at 0% 25%,
-      rgba(126, 42, 255, .32),
-      transparent 43%
-    ),
-    radial-gradient(
-      ellipse at 100% 30%,
-      rgba(126, 42, 255, .30),
-      transparent 43%
-    ),
-
-    /* Iluminación turquesa inferior */
-    radial-gradient(
-      ellipse at 50% 105%,
-      rgba(0, 205, 255, .22),
-      transparent 48%
-    ),
-
-    /* Base */
-    linear-gradient(
-      180deg,
-      #160a45 0%,
-      #19094a 58%,
-      #101343 100%
-    );
-
-  background-repeat: no-repeat;
-}
-
-/* Mantener el hero por encima del fondo ambiental */
-.stage {
-  z-index: 1;
-}
 
   :root { --bg:#160a45; }
   * { box-sizing:border-box; margin:0; padding:0; }
