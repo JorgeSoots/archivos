@@ -6,84 +6,50 @@
 <title>Frecuencia Retro – Countdown</title>
 <style>
 
-:root {
-  --bg:#160a45;
-  /* ====== Escritorio: el bloque de Eventtia ya es ~16:9, igual que el fondo ====== */
-  --ratio-w:16; --ratio-h:9;
-  --bg-img: url("https://archivos-self.vercel.app/Site-FFA-V2_Vista%201.jpg");
-  --letterbox:var(--bg);
-
-  --col0:35.25; --col1:42.8125; --col2:50.4375; --col3:58; --col-w:6.75; --digit-gap:.5;
-  --label-top:36.875; --label-h:2.3125; --label-font:1.6875;
-  --box-top:39.3125; --box-h:6.625; --box-radius:.1875; --digit-h:4.5;
-  --footer-left:35.25; --footer-top:46.125; --footer-w:29.5; --footer-h:2.3125; --footer-font:1.75;
-}
-
-/* ====== Celular: el bloque de Eventtia sigue siendo ancho y corto (no se vuelve
-   vertical). Para mostrar la imagen COMPLETA (pedido del cliente) sin deformarla,
-   se reduce para que quepa entera y sobra espacio a los costados; ese espacio se
-   pinta del mismo morado del fondo para que no se note como un error. ====== */
-@media (max-width:760px){
-  :root{
-    --ratio-w:514; --ratio-h:919;
-    --bg-img: url("https://archivos-self.vercel.app/Site-FFA-Vista%201-Celular.jpg");
-    --letterbox:#110334;
-
-    --col0:5.3502; --col1:27.7237; --col2:50.0973; --col3:72.4708; --col-w:19.4553; --digit-gap:1.3619;
-    --label-top:109.5331; --label-h:3.8911; --label-font:2.9183;
-    --box-top:114.0078; --box-h:14.2023; --box-radius:.3891; --digit-h:9.7276;
-    --footer-left:5.3502; --footer-top:105.0584; --footer-w:86.5759; --footer-h:3.8911; --footer-font:2.7237;
-  }
-}
-
+:root { --bg:#160a45; }
   * { box-sizing:border-box; margin:0; padding:0; }
   html, body { height:100%; background:var(--bg); overflow:hidden; }
   body { display:flex; align-items:center; justify-content:center; font-family: "Arial Black", Arial, Helvetica, sans-serif; }
 
-  /* Escenario con la relación de aspecto exacta del fondo activo: se ve completo,
-     sin recortes ni deformación. Si esa proporción no coincide con la del bloque
-     que lo contiene, sobra espacio a los lados (o arriba/abajo) — ese espacio es
-     el body de atrás, pintado para combinar (ver --letterbox). */
+  /* Escenario 16:9 que escala a la ventana */
   .stage {
     position:relative;
-    width:min(100vw, calc(100vh * var(--ratio-w) / var(--ratio-h)));
-    aspect-ratio: var(--ratio-w) / var(--ratio-h);
-    background:var(--bg-img) center / 100% 100% no-repeat;
+    width:min(100vw, calc(100vh * 16 / 9));
+    aspect-ratio:16 / 9;
+    background:url("https://archivos-self.vercel.app/Site-FFA-V2_Vista%201.jpg")center / 100% 100% no-repeat;
     container-type:inline-size;
     overflow:hidden;
   }
-  html, body { background:var(--letterbox); }
+  /* 1cqw = ancho/100  → 1px del diseño original (1600px) = 0.0625cqw */
 
   .counter { position:absolute; inset:0; pointer-events:none; }
   .col { position:absolute; }
 
   .label {
-    position:absolute; top:calc(var(--label-top)*1cqw); height:calc(var(--label-h)*1cqw);
-    width:calc(var(--col-w)*1cqw);
+    position:absolute; top:calc(590/16*1cqw); height:calc(37/16*1cqw);
     background:#5c0b0b;
-    color:#fff; font-weight:900; font-size:calc(var(--label-font)*1cqw); letter-spacing:.02em;
+    color:#fff; font-weight:900; font-size:calc(27/16*1cqw); letter-spacing:.02em;
     display:flex; align-items:center; justify-content:center;
     font-family: Arial, Helvetica, sans-serif;
   }
   .box {
-    position:absolute; top:calc(var(--box-top)*1cqw); height:calc(var(--box-h)*1cqw);
-    width:calc(var(--col-w)*1cqw);
+    position:absolute; top:calc(629/16*1cqw); height:calc(106/16*1cqw);
     background:linear-gradient(180deg,#3d3d3d 0%,#262626 45%,#1c1c1c 100%);
-    border-radius:calc(var(--box-radius)*1cqw);
-    box-shadow:0 calc(.1875*1cqw) calc(.5*1cqw) rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08);
-    display:flex; align-items:center; justify-content:center; gap:calc(var(--digit-gap)*1cqw);
+    border-radius:calc(3/16*1cqw);
+    box-shadow:0 calc(3/16*1cqw) calc(8/16*1cqw) rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08);
+    display:flex; align-items:center; justify-content:center; gap:calc(8/16*1cqw);
   }
-  .digit { height:calc(var(--digit-h)*1cqw); width:auto; overflow:visible; }
+  .digit { height:calc(72/16*1cqw); width:auto; overflow:visible; }
   .digit polygon { fill:#3b0c0c; transition:fill .15s; }
-  .digit polygon.on { fill:#ff1f1f; filter:drop-shadow(0 0 calc(.125*1cqw) rgba(255,30,30,.85)); }
+  .digit polygon.on { fill:#ff1f1f; filter:drop-shadow(0 0 calc(2/16*1cqw) rgba(255,30,30,.85)); }
 
   .footer {
-    position:absolute; left:calc(var(--footer-left)*1cqw); top:calc(var(--footer-top)*1cqw);
-    width:calc(var(--footer-w)*1cqw); height:calc(var(--footer-h)*1cqw);
+    position:absolute; left:calc(564/16*1cqw); top:calc(738/16*1cqw);
+    width:calc(472/16*1cqw); height:calc(37/16*1cqw);
     background:#000; color:#fff;
     display:flex; align-items:center; justify-content:center;
     font-family: Arial, Helvetica, sans-serif; font-weight:900;
-    font-size:calc(var(--footer-font)*1cqw); letter-spacing:.01em;
+    font-size:calc(28/16*1cqw); letter-spacing:.01em;
   }
   .footer.party { animation:pulse 1s ease-in-out infinite; color:#ffe14d; }
   @keyframes pulse { 50% { color:#ff4fd8; } }
@@ -99,14 +65,15 @@
   // Fecha objetivo: 10 de diciembre de 2026, 2:00 pm (hora de Ciudad de México, UTC-6)
   const TARGET = new Date('2026-12-10T14:00:00-06:00').getTime();
 
-  // Posiciones (columnas: variables CSS --col0.. --col3, ver :root)
+  // Posiciones (px del diseño original 1600x900)
   const COLS = [
-    { key:'d', label:'DÍAS', varx:'--col0' },
-    { key:'h', label:'HORA', varx:'--col1' },
-    { key:'m', label:'MIN',  varx:'--col2' },
-    { key:'s', label:'SEG',  varx:'--col3' },
+    { key:'d', label:'DÍAS', x:564 },
+    { key:'h', label:'HORA', x:685 },
+    { key:'m', label:'MIN',  x:807 },
+    { key:'s', label:'SEG',  x:928 },
   ];
-  const cv = name => `calc(var(${name}) * 1cqw)`;
+  const COL_W = 108;
+  const u = px => `calc(${px}/16*1cqw)`;
 
   // Display de 7 segmentos (viewBox 40x72)
   const H = (x1,x2,y) => `${x1},${y} ${x1+3},${y-3} ${x2-3},${y-3} ${x2},${y} ${x2-3},${y+3} ${x1+3},${y+3}`;
@@ -134,9 +101,9 @@
   COLS.forEach(c => {
     const lab = document.createElement('div');
     lab.className = 'label'; lab.textContent = c.label;
-    lab.style.left = cv(c.varx);
+    lab.style.left = u(c.x); lab.style.width = u(COL_W);
     const box = document.createElement('div');
-    box.className = 'box'; box.style.left = cv(c.varx);
+    box.className = 'box'; box.style.left = u(c.x); box.style.width = u(COL_W);
     counter.append(lab, box);
     boxes[c.key] = { el: box, digits: [] };
   });
