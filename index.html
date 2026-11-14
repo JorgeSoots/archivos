@@ -52,19 +52,19 @@
   .footer.party { animation:pulse 1s ease-in-out infinite; color:#ffe14d; }
   @keyframes pulse { 50% { color:#ff4fd8; } }
 
-  /* Adaptación automática cuando el iframe o pantalla es vertical (Celular) */
+  /* Adaptación automática para Celular / Pantallas verticales sin bordes morados */
   @media (max-width: 768px), (orientation: portrait) {
     .stage {
-      width:min(100vw, calc(100vh * 9 / 16));
-      height:100vh;
-      aspect-ratio:9 / 16;
-      background:url("https://archivos-self.vercel.app/Site-FFA-Vista%201-Celular.jpg") center / 100% 100% no-repeat;
+      width: 100% !important;
+      max-width: 100% !important;
+      height: auto !important;
+      aspect-ratio: 9 / 16 !important;
+      background: url("https://archivos-self.vercel.app/Site-FFA-Vista%201-Celular.jpg") center / 100% 100% no-repeat !important;
     }
     
-    /* Reajuste de escala y posición para que el reloj encaje perfecto en el arte móvil */
+    /* Baja y escala el contador a su posición correcta en la imagen de celular */
     .counter, .footer {
-      transform-origin: 50% calc(682.5/16*1cqw);
-      transform: translateY(calc(32% - (682.5/16*1cqw))) scale(1.15);
+      transform: translateY(48cqw) scale(1.15);
     }
   }
 </style>
