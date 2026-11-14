@@ -5,81 +5,63 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Frecuencia Retro – Countdown</title>
 <style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; background: #160a45; overflow-x: hidden; }
 
-:root {
-  --bg: #160a45;
-  /* Calibración exacta para móvil: ajusta estos dos valores si requieres moverlo milímetros */
-  --mob-y: 66.5%;
-  --mob-scale: 2.15;
-}
-  * { box-sizing:border-box; margin:0; padding:0; }
-  html, body { height:100%; background:var(--bg); overflow:hidden; }
-  body { display:flex; align-items:center; justify-content:center; font-family: "Arial Black", Arial, Helvetica, sans-serif; }
-
-  /* Escenario 16:9 para escritorio */
+  /* Contenedor adaptado para ocupar el 100% de la sección en Eventtia */
   .stage {
-    position:relative;
-    width:min(100vw, calc(100vh * 16 / 9));
-    aspect-ratio:16 / 9;
-    background:url("https://archivos-self.vercel.app/Site-FFA-V2_Vista%201.jpg") center / 100% 100% no-repeat;
-    container-type:inline-size;
-    overflow:hidden;
+    position: relative;
+    width: 100%;
+    /* Proporción exacta de tu imagen de celular (ancho 1080 x alto 1920 aprox) */
+    aspect-ratio: 9 / 16;
+    background: url("https://archivos-self.vercel.app/Site-FFA-V2_Vista%201.jpg") center / cover no-repeat;
+    container-type: inline-size;
+    overflow: hidden;
   }
 
-  /* 1cqw = ancho/100 → 1px del diseño original (1600px) = 0.0625cqw */
-  .counter { position:absolute; inset:0; pointer-events:none; }
-  .col { position:absolute; }
+  /* 1cqw = ancho/100 del contenedor principal */
+  .counter { position: absolute; inset: 0; pointer-events: none; }
+  .col { position: absolute; }
 
   .label {
-    position:absolute; top:calc(590/16*1cqw); height:calc(37/16*1cqw);
-    background:#5c0b0b;
-    color:#fff; font-weight:900; font-size:calc(27/16*1cqw); letter-spacing:.02em;
-    display:flex; align-items:center; justify-content:center;
+    position: absolute; top: calc(590/16*1cqw); height: calc(37/16*1cqw);
+    background: #5c0b0b;
+    color: #fff; font-weight: 900; font-size: calc(27/16*1cqw); letter-spacing: .02em;
+    display: flex; align-items: center; justify-content: center;
     font-family: Arial, Helvetica, sans-serif;
   }
   .box {
-    position:absolute; top:calc(629/16*1cqw); height:calc(106/16*1cqw);
-    background:linear-gradient(180deg,#3d3d3d 0%,#262626 45%,#1c1c1c 100%);
-    border-radius:calc(3/16*1cqw);
-    box-shadow:0 calc(3/16*1cqw) calc(8/16*1cqw) rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08);
-    display:flex; align-items:center; justify-content:center; gap:calc(8/16*1cqw);
+    position: absolute; top: calc(629/16*1cqw); height: calc(106/16*1cqw);
+    background: linear-gradient(180deg,#3d3d3d 0%,#262626 45%,#1c1c1c 100%);
+    border-radius: calc(3/16*1cqw);
+    box-shadow: 0 calc(3/16*1cqw) calc(8/16*1cqw) rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08);
+    display: flex; align-items: center; justify-content: center; gap: calc(8/16*1cqw);
   }
-  .digit { height:calc(72/16*1cqw); width:auto; overflow:visible; }
-  .digit polygon { fill:#3b0c0c; transition:fill .15s; }
-  .digit polygon.on { fill:#ff1f1f; filter:drop-shadow(0 0 calc(2/16*1cqw) rgba(255,30,30,.85)); }
+  .digit { height: calc(72/16*1cqw); width: auto; overflow: visible; }
+  .digit polygon { fill: #3b0c0c; transition: fill .15s; }
+  .digit polygon.on { fill: #ff1f1f; filter: drop-shadow(0 0 calc(2/16*1cqw) rgba(255,30,30,.85)); }
 
   .footer {
-    position:absolute; left:calc(564/16*1cqw); top:calc(738/16*1cqw);
-    width:calc(472/16*1cqw); height:calc(37/16*1cqw);
-    background:#000; color:#fff;
-    display:flex; align-items:center; justify-content:center;
-    font-family: Arial, Helvetica, sans-serif; font-weight:900;
-    font-size:calc(28/16*1cqw); letter-spacing:.01em;
+    position: absolute; left: calc(564/16*1cqw); top: calc(738/16*1cqw);
+    width: calc(472/16*1cqw); height: calc(37/16*1cqw);
+    background: #000; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-family: Arial, Helvetica, sans-serif; font-weight: 900;
+    font-size: calc(28/16*1cqw); letter-spacing: .01em;
   }
-  .footer.party { animation:pulse 1s ease-in-out infinite; color:#ffe14d; }
-  @keyframes pulse { 50% { color:#ff4fd8; } }
+  .footer.party { animation: pulse 1s ease-in-out infinite; color: #ffe14d; }
+  @keyframes pulse { 50% { color: #ff4fd8; } }
 
-  /* Adaptación vertical para dispositivos móviles */
+  /* En pantallas de celular, cambia automáticamente al fondo vertical sin márgenes laterales */
   @media (max-width: 768px), (orientation: portrait) {
     .stage {
-      width: min(100vw, calc(100dvh * 9 / 16));
-      height: min(100dvh, calc(100vw * 16 / 9));
-      aspect-ratio: 9 / 16;
       background-image: url("https://archivos-self.vercel.app/Site-FFA-Vista%201-Celular.jpg");
-      background-size: cover;
-      background-position: center;
-    }
-
-    /* Desplazar todo el bloque del contador (682.5px es el centro vertical original de los dígitos) */
-    .counter, .footer {
-      transform-origin: 50% calc(682.5/16*1cqw);
-      transform: translateY(calc(var(--mob-y) - (682.5/16*1cqw))) scale(var(--mob-scale));
     }
   }
 </style>
 </head>
 <body>
-<div class="stage" id="stage" title="Doble clic para pantalla completa">
+<div class="stage" id="stage">
   <div class="counter" id="counter"></div>
   <div class="footer" id="footer">TIEMPO PARA LA FIESTA</div>
 </div>
@@ -151,12 +133,6 @@
     setTimeout(tick, 1000 - (Date.now() % 1000) + 5);
   }
   tick();
-
-  // Doble clic = pantalla completa (útil para proyectar en pantallas del evento)
-  document.getElementById('stage').addEventListener('dblclick', () => {
-    if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
-    else document.exitFullscreen?.();
-  });
 </script>
 </body>
 </html>
