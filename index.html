@@ -162,6 +162,29 @@
     if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
     else document.exitFullscreen?.();
   });
+
+  // ===== SOLO DIAGNÓSTICO TEMPORAL: quitar este bloque cuando ya no se necesite =====
+  // Muestra, en una esquina, el tamaño real del iframe donde vive esta página y el
+  // tamaño real que terminó teniendo el "stage". Esto nos dice cómo te está
+  // entregando el espacio el bloque de Eventtia en el celular.
+  (function(){
+    const diag = document.createElement('div');
+    diag.style.cssText = 'position:fixed;left:4px;bottom:4px;z-index:9999;'
+      + 'background:rgba(0,0,0,.75);color:#0f0;font:11px/1.4 monospace;'
+      + 'padding:4px 6px;border-radius:4px;pointer-events:none;white-space:pre;';
+    document.body.appendChild(diag);
+    const stage = document.getElementById('stage');
+    function update(){
+      const r = stage.getBoundingClientRect();
+      diag.textContent =
+        'iframe: ' + window.innerWidth + ' x ' + window.innerHeight + '\n' +
+        'stage:  ' + Math.round(r.width) + ' x ' + Math.round(r.height);
+    }
+    update();
+    window.addEventListener('resize', update);
+  })();
+  // ===== FIN BLOQUE DE DIAGNÓSTICO =====
+
 </script>
 </body>
 </html>
