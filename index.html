@@ -8,18 +8,19 @@
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { width: 100%; background: #160a45; overflow-x: hidden; }
 
-  /* Contenedor adaptado para ocupar el 100% de la sección en Eventtia */
+  /* Contenedor base (Escritorio / Horizontal 16:9) */
   .stage {
     position: relative;
     width: 100%;
-    /* Proporción exacta de tu imagen de celular (ancho 1080 x alto 1920 aprox) */
-    aspect-ratio: 9 / 16;
-    background: url("https://archivos-self.vercel.app/Site-FFA-V2_Vista%201.jpg") center / cover no-repeat;
+    max-width: 1600px; /* Evita que en pantallas gigantes de laptop se vea enorme o distorsionado */
+    margin: 0 auto;
+    aspect-ratio: 16 / 9;
+    background: url("https://archivos-self.vercel.app/Site-FFA-V2_Vista%201.jpg") center / 100% 100% no-repeat;
     container-type: inline-size;
     overflow: hidden;
   }
 
-  /* 1cqw = ancho/100 del contenedor principal */
+  /* 1cqw = ancho/100 del contenedor */
   .counter { position: absolute; inset: 0; pointer-events: none; }
   .col { position: absolute; }
 
@@ -52,10 +53,19 @@
   .footer.party { animation: pulse 1s ease-in-out infinite; color: #ffe14d; }
   @keyframes pulse { 50% { color: #ff4fd8; } }
 
-  /* En pantallas de celular, cambia automáticamente al fondo vertical sin márgenes laterales */
+  /* Adaptación automática para Celular / Pantallas verticales */
   @media (max-width: 768px), (orientation: portrait) {
     .stage {
-      background-image: url("https://archivos-self.vercel.app/Site-FFA-Vista%201-Celular.jpg");
+      max-width: 100%;
+      /* Relación de aspecto vertical exacta para la imagen de celular */
+      aspect-ratio: 9 / 16;
+      background: url("https://archivos-self.vercel.app/Site-FFA-Vista%201-Celular.jpg") center / 100% 100% no-repeat;
+    }
+
+    /* Reubicación y escala del contador adaptado específicamente a las coordenadas de la versión móvil */
+    .counter, .footer {
+      transform-origin: 50% calc(682.5/16*1cqw);
+      transform: translateY(calc(32% - (682.5/16*1cqw))) scale(1.15);
     }
   }
 </style>
