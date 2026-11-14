@@ -8,77 +8,78 @@
 
 :root {
   --bg:#160a45;
-  /* ====== Relación de aspecto y fondo: escritorio por defecto ====== */
-  --ratio-w:16; --ratio-h:9;
-  --bg-img: url("https://archivos-self.vercel.app/Site-FFA-V2_Vista%201.jpg");
 
-  /* Posiciones en cqw (1cqw = 1% del ancho del escenario) */
-  --col0:35.25; --col1:42.8125; --col2:50.4375; --col3:58; --col-w:6.75;
-  --label-top:36.875; --label-h:2.3125; --label-font:1.6875;
-  --box-top:39.3125; --box-h:6.625; --box-radius:.1875; --digit-h:4.5; --digit-gap:.5;
-  --footer-left:35.25; --footer-top:46.125; --footer-w:29.5; --footer-h:2.3125; --footer-font:1.75;
+  /* ====== Escritorio (bloque ~16:9, el fondo ya tiene esa misma proporción) ====== */
+  --bg-img: url("https://archivos-self.vercel.app/Site-FFA-V2_Vista%201.jpg");
+  --bg-pos: center center;
+
+  /* Posiciones en vw (ancho) / vh (alto) del bloque donde vive esta página */
+  --col0:35.25; --col1:42.8125; --col2:50.4375; --col3:58; --col-w:6.75; --digit-gap:.5;
+  --label-top:65.5556; --label-h:4.1111; --label-font:3;
+  --box-top:69.8889; --box-h:11.7778; --box-radius:.3333; --digit-h:8;
+  --footer-left:35.25; --footer-top:82; --footer-w:29.5; --footer-h:4.1111; --footer-font:3.1111;
 }
 
-/* ====== Mismos elementos, pero reubicados para el fondo vertical de móvil ====== */
+/* ====== Celular: el bloque de Eventtia sigue siendo ancho y corto (no se vuelve
+   vertical), así que en vez de estirar la imagen vertical completa (lo que la
+   aplastaba) la recortamos mostrando la franja donde está "Frecuencia Retro" y
+   el contador, que es lo importante. ====== */
 @media (max-width:760px){
   :root{
-    --ratio-w:500; --ratio-h:894;
     --bg-img: url("https://archivos-self.vercel.app/Site-FFA-Vista%201-Celular.jpg");
+    --bg-pos: center 60.3%;
 
-    --col0:5.5; --col1:28.5; --col2:51.5; --col3:74.5; --col-w:20;
-    --label-top:112.6; --label-h:4; --label-font:3;
-    --box-top:117.2; --box-h:14.6; --box-radius:.4; --digit-h:10; --digit-gap:1.4;
-    --footer-left:5.5; --footer-top:108; --footer-w:89; --footer-h:4; --footer-font:2.8;
+    --col0:5.350; --col1:27.724; --col2:50.097; --col3:72.471; --col-w:19.455; --digit-gap:1.362;
+    --label-top:63.239; --label-h:6.911; --label-font:5.184;
+    --box-top:71.187; --box-h:25.227; --box-radius:.691; --digit-h:17.278;
+    --footer-left:5.350; --footer-top:55.291; --footer-w:86.576; --footer-h:6.911; --footer-font:4.838;
   }
 }
 
   * { box-sizing:border-box; margin:0; padding:0; }
   html, body { height:100%; background:var(--bg); overflow:hidden; }
-  body { display:flex; align-items:center; justify-content:center; font-family: "Arial Black", Arial, Helvetica, sans-serif; }
+  body { font-family: "Arial Black", Arial, Helvetica, sans-serif; }
 
-  /* Escenario que escala a la ventana, con la relación de aspecto activa (ver :root arriba) */
+  /* El escenario ocupa siempre el 100% del espacio real que da el bloque que lo
+     contiene (sea cual sea su forma), y el fondo se ajusta con "cover" para que
+     nunca queden franjas ni se vea estirado/aplastado. */
   .stage {
     position:relative;
-    width:min(100vw, calc(100vh * var(--ratio-w) / var(--ratio-h)));
-    aspect-ratio: var(--ratio-w) / var(--ratio-h);
-    background:var(--bg-img) center / 100% 100% no-repeat;
-    container-type:inline-size;
+    width:100%; height:100%;
+    background:var(--bg-img) var(--bg-pos) / cover no-repeat;
     overflow:hidden;
   }
-  /* Todas las medidas de abajo están en cqw (1cqw = 1% del ancho del escenario);
-     como la relación de aspecto del escenario siempre coincide con el fondo activo,
-     1cqw representa la misma fracción del diseño tanto en horizontal como en vertical. */
 
   .counter { position:absolute; inset:0; pointer-events:none; }
   .col { position:absolute; }
 
   .label {
-    position:absolute; top:calc(var(--label-top)*1cqw); height:calc(var(--label-h)*1cqw);
-    width:calc(var(--col-w)*1cqw);
+    position:absolute; top:calc(var(--label-top)*1vh); height:calc(var(--label-h)*1vh);
+    width:calc(var(--col-w)*1vw);
     background:#5c0b0b;
-    color:#fff; font-weight:900; font-size:calc(var(--label-font)*1cqw); letter-spacing:.02em;
+    color:#fff; font-weight:900; font-size:calc(var(--label-font)*1vh); letter-spacing:.02em;
     display:flex; align-items:center; justify-content:center;
     font-family: Arial, Helvetica, sans-serif;
   }
   .box {
-    position:absolute; top:calc(var(--box-top)*1cqw); height:calc(var(--box-h)*1cqw);
-    width:calc(var(--col-w)*1cqw);
+    position:absolute; top:calc(var(--box-top)*1vh); height:calc(var(--box-h)*1vh);
+    width:calc(var(--col-w)*1vw);
     background:linear-gradient(180deg,#3d3d3d 0%,#262626 45%,#1c1c1c 100%);
-    border-radius:calc(var(--box-radius)*1cqw);
-    box-shadow:0 calc(.1875*1cqw) calc(.5*1cqw) rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08);
-    display:flex; align-items:center; justify-content:center; gap:calc(var(--digit-gap)*1cqw);
+    border-radius:calc(var(--box-radius)*1vh);
+    box-shadow:0 .3vh .6vh rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08);
+    display:flex; align-items:center; justify-content:center; gap:calc(var(--digit-gap)*1vw);
   }
-  .digit { height:calc(var(--digit-h)*1cqw); width:auto; overflow:visible; }
+  .digit { height:calc(var(--digit-h)*1vh); width:auto; overflow:visible; }
   .digit polygon { fill:#3b0c0c; transition:fill .15s; }
-  .digit polygon.on { fill:#ff1f1f; filter:drop-shadow(0 0 calc(.125*1cqw) rgba(255,30,30,.85)); }
+  .digit polygon.on { fill:#ff1f1f; filter:drop-shadow(0 0 .2vh rgba(255,30,30,.85)); }
 
   .footer {
-    position:absolute; left:calc(var(--footer-left)*1cqw); top:calc(var(--footer-top)*1cqw);
-    width:calc(var(--footer-w)*1cqw); height:calc(var(--footer-h)*1cqw);
+    position:absolute; left:calc(var(--footer-left)*1vw); top:calc(var(--footer-top)*1vh);
+    width:calc(var(--footer-w)*1vw); height:calc(var(--footer-h)*1vh);
     background:#000; color:#fff;
     display:flex; align-items:center; justify-content:center;
     font-family: Arial, Helvetica, sans-serif; font-weight:900;
-    font-size:calc(var(--footer-font)*1cqw); letter-spacing:.01em;
+    font-size:calc(var(--footer-font)*1vh); letter-spacing:.01em;
   }
   .footer.party { animation:pulse 1s ease-in-out infinite; color:#ffe14d; }
   @keyframes pulse { 50% { color:#ff4fd8; } }
@@ -101,7 +102,7 @@
     { key:'m', label:'MIN',  varx:'--col2' },
     { key:'s', label:'SEG',  varx:'--col3' },
   ];
-  const cv = name => `calc(var(${name}) * 1cqw)`;
+  const cv = name => `calc(var(${name}) * 1vw)`;
 
   // Display de 7 segmentos (viewBox 40x72)
   const H = (x1,x2,y) => `${x1},${y} ${x1+3},${y-3} ${x2-3},${y-3} ${x2},${y} ${x2-3},${y+3} ${x1+3},${y+3}`;
@@ -162,29 +163,6 @@
     if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
     else document.exitFullscreen?.();
   });
-
-  // ===== SOLO DIAGNÓSTICO TEMPORAL: quitar este bloque cuando ya no se necesite =====
-  // Muestra, en una esquina, el tamaño real del iframe donde vive esta página y el
-  // tamaño real que terminó teniendo el "stage". Esto nos dice cómo te está
-  // entregando el espacio el bloque de Eventtia en el celular.
-  (function(){
-    const diag = document.createElement('div');
-    diag.style.cssText = 'position:fixed;left:4px;bottom:4px;z-index:9999;'
-      + 'background:rgba(0,0,0,.75);color:#0f0;font:11px/1.4 monospace;'
-      + 'padding:4px 6px;border-radius:4px;pointer-events:none;white-space:pre;';
-    document.body.appendChild(diag);
-    const stage = document.getElementById('stage');
-    function update(){
-      const r = stage.getBoundingClientRect();
-      diag.textContent =
-        'iframe: ' + window.innerWidth + ' x ' + window.innerHeight + '\n' +
-        'stage:  ' + Math.round(r.width) + ' x ' + Math.round(r.height);
-    }
-    update();
-    window.addEventListener('resize', update);
-  })();
-  // ===== FIN BLOQUE DE DIAGNÓSTICO =====
-
 </script>
 </body>
 </html>
