@@ -8,78 +8,82 @@
 
 :root {
   --bg:#160a45;
-
-  /* ====== Escritorio (bloque ~16:9, el fondo ya tiene esa misma proporción) ====== */
+  /* ====== Escritorio: el bloque de Eventtia ya es ~16:9, igual que el fondo ====== */
+  --ratio-w:16; --ratio-h:9;
   --bg-img: url("https://archivos-self.vercel.app/Site-FFA-V2_Vista%201.jpg");
-  --bg-pos: center center;
+  --letterbox:var(--bg);
 
-  /* Posiciones en vw (ancho) / vh (alto) del bloque donde vive esta página */
   --col0:35.25; --col1:42.8125; --col2:50.4375; --col3:58; --col-w:6.75; --digit-gap:.5;
-  --label-top:65.5556; --label-h:4.1111; --label-font:3;
-  --box-top:69.8889; --box-h:11.7778; --box-radius:.3333; --digit-h:8;
-  --footer-left:35.25; --footer-top:82; --footer-w:29.5; --footer-h:4.1111; --footer-font:3.1111;
+  --label-top:36.875; --label-h:2.3125; --label-font:1.6875;
+  --box-top:39.3125; --box-h:6.625; --box-radius:.1875; --digit-h:4.5;
+  --footer-left:35.25; --footer-top:46.125; --footer-w:29.5; --footer-h:2.3125; --footer-font:1.75;
 }
 
 /* ====== Celular: el bloque de Eventtia sigue siendo ancho y corto (no se vuelve
-   vertical), así que en vez de estirar la imagen vertical completa (lo que la
-   aplastaba) la recortamos mostrando la franja donde está "Frecuencia Retro" y
-   el contador, que es lo importante. ====== */
+   vertical). Para mostrar la imagen COMPLETA (pedido del cliente) sin deformarla,
+   se reduce para que quepa entera y sobra espacio a los costados; ese espacio se
+   pinta del mismo morado del fondo para que no se note como un error. ====== */
 @media (max-width:760px){
   :root{
+    --ratio-w:514; --ratio-h:919;
     --bg-img: url("https://archivos-self.vercel.app/Site-FFA-Vista%201-Celular.jpg");
-    --bg-pos: center 60.3%;
+    --letterbox:#110334;
 
-    --col0:5.350; --col1:27.724; --col2:50.097; --col3:72.471; --col-w:19.455; --digit-gap:1.362;
-    --label-top:63.239; --label-h:6.911; --label-font:5.184;
-    --box-top:71.187; --box-h:25.227; --box-radius:.691; --digit-h:17.278;
-    --footer-left:5.350; --footer-top:55.291; --footer-w:86.576; --footer-h:6.911; --footer-font:4.838;
+    --col0:5.3502; --col1:27.7237; --col2:50.0973; --col3:72.4708; --col-w:19.4553; --digit-gap:1.3619;
+    --label-top:109.5331; --label-h:3.8911; --label-font:2.9183;
+    --box-top:114.0078; --box-h:14.2023; --box-radius:.3891; --digit-h:9.7276;
+    --footer-left:5.3502; --footer-top:105.0584; --footer-w:86.5759; --footer-h:3.8911; --footer-font:2.7237;
   }
 }
 
   * { box-sizing:border-box; margin:0; padding:0; }
   html, body { height:100%; background:var(--bg); overflow:hidden; }
-  body { font-family: "Arial Black", Arial, Helvetica, sans-serif; }
+  body { display:flex; align-items:center; justify-content:center; font-family: "Arial Black", Arial, Helvetica, sans-serif; }
 
-  /* El escenario ocupa siempre el 100% del espacio real que da el bloque que lo
-     contiene (sea cual sea su forma), y el fondo se ajusta con "cover" para que
-     nunca queden franjas ni se vea estirado/aplastado. */
+  /* Escenario con la relación de aspecto exacta del fondo activo: se ve completo,
+     sin recortes ni deformación. Si esa proporción no coincide con la del bloque
+     que lo contiene, sobra espacio a los lados (o arriba/abajo) — ese espacio es
+     el body de atrás, pintado para combinar (ver --letterbox). */
   .stage {
     position:relative;
-    width:100%; height:100%;
-    background:var(--bg-img) var(--bg-pos) / cover no-repeat;
+    width:min(100vw, calc(100vh * var(--ratio-w) / var(--ratio-h)));
+    aspect-ratio: var(--ratio-w) / var(--ratio-h);
+    background:var(--bg-img) center / 100% 100% no-repeat;
+    container-type:inline-size;
     overflow:hidden;
   }
+  html, body { background:var(--letterbox); }
 
   .counter { position:absolute; inset:0; pointer-events:none; }
   .col { position:absolute; }
 
   .label {
-    position:absolute; top:calc(var(--label-top)*1vh); height:calc(var(--label-h)*1vh);
-    width:calc(var(--col-w)*1vw);
+    position:absolute; top:calc(var(--label-top)*1cqw); height:calc(var(--label-h)*1cqw);
+    width:calc(var(--col-w)*1cqw);
     background:#5c0b0b;
-    color:#fff; font-weight:900; font-size:calc(var(--label-font)*1vh); letter-spacing:.02em;
+    color:#fff; font-weight:900; font-size:calc(var(--label-font)*1cqw); letter-spacing:.02em;
     display:flex; align-items:center; justify-content:center;
     font-family: Arial, Helvetica, sans-serif;
   }
   .box {
-    position:absolute; top:calc(var(--box-top)*1vh); height:calc(var(--box-h)*1vh);
-    width:calc(var(--col-w)*1vw);
+    position:absolute; top:calc(var(--box-top)*1cqw); height:calc(var(--box-h)*1cqw);
+    width:calc(var(--col-w)*1cqw);
     background:linear-gradient(180deg,#3d3d3d 0%,#262626 45%,#1c1c1c 100%);
-    border-radius:calc(var(--box-radius)*1vh);
-    box-shadow:0 .3vh .6vh rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08);
-    display:flex; align-items:center; justify-content:center; gap:calc(var(--digit-gap)*1vw);
+    border-radius:calc(var(--box-radius)*1cqw);
+    box-shadow:0 calc(.1875*1cqw) calc(.5*1cqw) rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.08);
+    display:flex; align-items:center; justify-content:center; gap:calc(var(--digit-gap)*1cqw);
   }
-  .digit { height:calc(var(--digit-h)*1vh); width:auto; overflow:visible; }
+  .digit { height:calc(var(--digit-h)*1cqw); width:auto; overflow:visible; }
   .digit polygon { fill:#3b0c0c; transition:fill .15s; }
-  .digit polygon.on { fill:#ff1f1f; filter:drop-shadow(0 0 .2vh rgba(255,30,30,.85)); }
+  .digit polygon.on { fill:#ff1f1f; filter:drop-shadow(0 0 calc(.125*1cqw) rgba(255,30,30,.85)); }
 
   .footer {
-    position:absolute; left:calc(var(--footer-left)*1vw); top:calc(var(--footer-top)*1vh);
-    width:calc(var(--footer-w)*1vw); height:calc(var(--footer-h)*1vh);
+    position:absolute; left:calc(var(--footer-left)*1cqw); top:calc(var(--footer-top)*1cqw);
+    width:calc(var(--footer-w)*1cqw); height:calc(var(--footer-h)*1cqw);
     background:#000; color:#fff;
     display:flex; align-items:center; justify-content:center;
     font-family: Arial, Helvetica, sans-serif; font-weight:900;
-    font-size:calc(var(--footer-font)*1vh); letter-spacing:.01em;
+    font-size:calc(var(--footer-font)*1cqw); letter-spacing:.01em;
   }
   .footer.party { animation:pulse 1s ease-in-out infinite; color:#ffe14d; }
   @keyframes pulse { 50% { color:#ff4fd8; } }
@@ -102,7 +106,7 @@
     { key:'m', label:'MIN',  varx:'--col2' },
     { key:'s', label:'SEG',  varx:'--col3' },
   ];
-  const cv = name => `calc(var(${name}) * 1vw)`;
+  const cv = name => `calc(var(${name}) * 1cqw)`;
 
   // Display de 7 segmentos (viewBox 40x72)
   const H = (x1,x2,y) => `${x1},${y} ${x1+3},${y-3} ${x2-3},${y-3} ${x2},${y} ${x2-3},${y+3} ${x1+3},${y+3}`;
