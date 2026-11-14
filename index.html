@@ -23,10 +23,11 @@
     overflow: hidden;
   }
 
-  /* Vista de celular forzada por JavaScript para evitar bloqueos de Eventtia */
+  /* Vista de celular: usa cover para que no se aplaste y respete su proporción */
   .stage.mobile-view {
     aspect-ratio: 9 / 16 !important;
-    background: url("https://archivos-self.vercel.app/Site-FFA-Vista%201-Celular.jpg") center / 100% 100% no-repeat !important;
+    max-height: none !important;
+    background: url("https://archivos-self.vercel.app/Site-FFA-Vista%201-Celular.jpg") center / cover no-repeat !important;
   }
 
   .counter { position:absolute; inset:0; pointer-events:none; }
@@ -69,7 +70,6 @@
 </div>
 
 <script>
-  // Detección inteligente por JS para cambiar a móvil si el ancho es menor a 768px o la pantalla es vertical
   function checkMobile() {
     const stage = document.getElementById('stage');
     if (window.innerWidth <= 768 || window.innerHeight > window.innerWidth) {
@@ -80,7 +80,6 @@
   }
   window.addEventListener('resize', checkMobile);
   window.addEventListener('DOMContentLoaded', checkMobile);
-  // Forzar comprobación inmediata al cargar
   checkMobile();
 
   const TARGET = new Date('2026-12-10T14:00:00-06:00').getTime();
