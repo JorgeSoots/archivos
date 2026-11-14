@@ -5,22 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Frecuencia Retro – Countdown</title>
 <style>
-
 :root { --bg:#160a45; }
   * { box-sizing:border-box; margin:0; padding:0; }
   html, body { height:100%; background:var(--bg); overflow:hidden; }
   body { display:flex; align-items:center; justify-content:center; font-family: "Arial Black", Arial, Helvetica, sans-serif; }
 
-  /* Escenario 16:9 que escala a la ventana */
+  /* Escenario horizontal por defecto (Escritorio) */
   .stage {
     position:relative;
     width:min(100vw, calc(100vh * 16 / 9));
     aspect-ratio:16 / 9;
-    background:url("https://archivos-self.vercel.app/Site-FFA-V2_Vista%201.jpg")center / 100% 100% no-repeat;
+    background:url("https://archivos-self.vercel.app/Site-FFA-V2_Vista%201.jpg") center / 100% 100% no-repeat;
     container-type:inline-size;
     overflow:hidden;
   }
-  /* 1cqw = ancho/100  → 1px del diseño original (1600px) = 0.0625cqw */
 
   .counter { position:absolute; inset:0; pointer-events:none; }
   .col { position:absolute; }
@@ -53,6 +51,22 @@
   }
   .footer.party { animation:pulse 1s ease-in-out infinite; color:#ffe14d; }
   @keyframes pulse { 50% { color:#ff4fd8; } }
+
+  /* Adaptación automática cuando el iframe o pantalla es vertical (Celular) */
+  @media (max-width: 768px), (orientation: portrait) {
+    .stage {
+      width:min(100vw, calc(100vh * 9 / 16));
+      height:100vh;
+      aspect-ratio:9 / 16;
+      background:url("https://archivos-self.vercel.app/Site-FFA-Vista%201-Celular.jpg") center / 100% 100% no-repeat;
+    }
+    
+    /* Reajuste de escala y posición para que el reloj encaje perfecto en el arte móvil */
+    .counter, .footer {
+      transform-origin: 50% calc(682.5/16*1cqw);
+      transform: translateY(calc(32% - (682.5/16*1cqw))) scale(1.15);
+    }
+  }
 </style>
 </head>
 <body>
@@ -62,10 +76,8 @@
 </div>
 
 <script>
-  // Fecha objetivo: 10 de diciembre de 2026, 2:00 pm (hora de Ciudad de México, UTC-6)
   const TARGET = new Date('2026-12-10T14:00:00-06:00').getTime();
 
-  // Posiciones (px del diseño original 1600x900)
   const COLS = [
     { key:'d', label:'DÍAS', x:564 },
     { key:'h', label:'HORA', x:685 },
@@ -75,7 +87,6 @@
   const COL_W = 108;
   const u = px => `calc(${px}/16*1cqw)`;
 
-  // Display de 7 segmentos (viewBox 40x72)
   const H = (x1,x2,y) => `${x1},${y} ${x1+3},${y-3} ${x2-3},${y-3} ${x2},${y} ${x2-3},${y+3} ${x1+3},${y+3}`;
   const V = (x,y1,y2) => `${x},${y1} ${x+3},${y1+3} ${x+3},${y2-3} ${x},${y2} ${x-3},${y2-3} ${x-3},${y1+3}`;
   const SEG = { a:H(6,34,4), b:V(36,6,34), c:V(36,38,66), d:H(6,34,68), e:V(4,38,66), f:V(4,6,34), g:H(6,34,36) };
@@ -129,7 +140,6 @@
   }
   tick();
 
-  // Doble clic = pantalla completa (útil para proyectar en pantallas del evento)
   document.getElementById('stage').addEventListener('dblclick', () => {
     if (!document.fullscreenElement) document.documentElement.requestFullscreen?.();
     else document.exitFullscreen?.();
