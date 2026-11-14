@@ -6,22 +6,27 @@
 <title>Frecuencia Retro – Countdown</title>
 <style>
 
-:root { --bg:#160a45; }
+:root {
+  --bg: #160a45;
+  /* Calibración exacta para móvil: ajusta estos dos valores si requieres moverlo milímetros */
+  --mob-y: 66.5%;
+  --mob-scale: 2.15;
+}
   * { box-sizing:border-box; margin:0; padding:0; }
   html, body { height:100%; background:var(--bg); overflow:hidden; }
   body { display:flex; align-items:center; justify-content:center; font-family: "Arial Black", Arial, Helvetica, sans-serif; }
 
-  /* Escenario 16:9 que escala a la ventana */
+  /* Escenario 16:9 para escritorio */
   .stage {
     position:relative;
     width:min(100vw, calc(100vh * 16 / 9));
     aspect-ratio:16 / 9;
-    background:url("https://archivos-self.vercel.app/Site-FFA-V2_Vista%201.jpg")center / 100% 100% no-repeat;
+    background:url("https://archivos-self.vercel.app/Site-FFA-V2_Vista%201.jpg") center / 100% 100% no-repeat;
     container-type:inline-size;
     overflow:hidden;
   }
-  /* 1cqw = ancho/100  → 1px del diseño original (1600px) = 0.0625cqw */
 
+  /* 1cqw = ancho/100 → 1px del diseño original (1600px) = 0.0625cqw */
   .counter { position:absolute; inset:0; pointer-events:none; }
   .col { position:absolute; }
 
@@ -53,6 +58,24 @@
   }
   .footer.party { animation:pulse 1s ease-in-out infinite; color:#ffe14d; }
   @keyframes pulse { 50% { color:#ff4fd8; } }
+
+  /* Adaptación vertical para dispositivos móviles */
+  @media (max-width: 768px), (orientation: portrait) {
+    .stage {
+      width: min(100vw, calc(100dvh * 9 / 16));
+      height: min(100dvh, calc(100vw * 16 / 9));
+      aspect-ratio: 9 / 16;
+      background-image: url("https://archivos-self.vercel.app/Site-FFA-Vista%201-Celular.jpg");
+      background-size: cover;
+      background-position: center;
+    }
+
+    /* Desplazar todo el bloque del contador (682.5px es el centro vertical original de los dígitos) */
+    .counter, .footer {
+      transform-origin: 50% calc(682.5/16*1cqw);
+      transform: translateY(calc(var(--mob-y) - (682.5/16*1cqw))) scale(var(--mob-scale));
+    }
+  }
 </style>
 </head>
 <body>
