@@ -203,6 +203,15 @@
     try {
       fsFrame.srcdoc = decodeInlineDoc(docId);
       fsOverlay.classList.add('show');
+      // Si el navegador lo permite (y el <iframe> que embebe esta página en
+      // Eventtia tiene el atributo "allowfullscreen"), pedimos pantalla
+      // completa de verdad, para cubrir toda la página y no solo el recuadro
+      // del iframe. Si no se puede (falta el permiso, o el navegador no lo
+      // soporta para contenido embebido, como suele pasar en Safari/iPhone),
+      // se queda tal cual, llenando el marco — no se rompe nada.
+      const el = document.documentElement;
+      const req = el.requestFullscreen || el.webkitRequestFullscreen;
+      if (req) { req.call(el)?.catch?.(() => {}); }
     } catch (err) {
       status.textContent = 'Error al cargar: ' + err.message;
       console.error(err);
@@ -214,6 +223,10 @@
     fsOverlay.classList.remove('show');
     fsFrame.removeAttribute('srcdoc');
     fsFrame.src = 'about:blank';
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      const exit = document.exitFullscreen || document.webkitExitFullscreen;
+      exit?.call(document)?.catch?.(() => {});
+    }
   }
 
   // Qué sección interna corresponde a cada botón del menú con data-inline="..."
