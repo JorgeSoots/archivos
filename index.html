@@ -10,7 +10,7 @@
   html, body { width: 100%; height: 100%; background: var(--bg); overflow: hidden; }
   body { display: flex; align-items: center; justify-content: center; font-family: "Arial Black", Arial, Helvetica, sans-serif; }
 
-  /* Full en PC sin bordes morados */
+  /* Escenario por defecto (PC / Horizontal) */
   .stage {
     position: relative;
     width: 100vw;
@@ -20,7 +20,7 @@
     overflow: hidden;
   }
 
-  /* Solo cambia al arte vertical cuando el contenedor del iframe realmente tenga altura vertical */
+  /* Vista forzada para Celular (Vertical 9:16) */
   .stage.is-portrait {
     background: url("https://archivos-self.vercel.app/Site-FFA-Vista%201-Celular.jpg") center / 100% 100% no-repeat;
   }
@@ -56,7 +56,7 @@
   .footer.party { animation: pulse 1s ease-in-out infinite; color: #ffe14d; }
   @keyframes pulse { 50% { color: #ff4fd8; } }
 
-  /* Posición y escala del contador cuando el contenedor es vertical (9:16) */
+  /* Escala y posición exacta para cuando esté en modo celular */
   .stage.is-portrait .counter,
   .stage.is-portrait .footer {
     transform-origin: 50% calc(682.5/16*1cqw);
@@ -73,13 +73,17 @@
 <script>
   function updateLayout() {
     const stage = document.getElementById('stage');
-    // Evalúa la proporción REAL de la caja del iframe, no de toda la pantalla
-    if (window.innerHeight > window.innerWidth) {
+    
+    // Detectar si es un dispositivo móvil real por ancho de pantalla O por tipo de navegador (User Agent)
+    const isMobileDevice = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+
+    if (isMobileDevice) {
       stage.classList.add('is-portrait');
     } else {
       stage.classList.remove('is-portrait');
     }
   }
+
   window.addEventListener('resize', updateLayout);
   updateLayout();
 
