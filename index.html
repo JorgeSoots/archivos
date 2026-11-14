@@ -7,17 +7,26 @@
 <style>
 :root { --bg:#160a45; }
   * { box-sizing:border-box; margin:0; padding:0; }
-  html, body { height:100%; background:var(--bg); overflow:hidden; }
+  html, body { width:100%; height:100%; background:var(--bg); overflow:hidden; }
   body { display:flex; align-items:center; justify-content:center; font-family: "Arial Black", Arial, Helvetica, sans-serif; }
 
   /* Escenario horizontal por defecto (Escritorio) */
   .stage {
     position:relative;
-    width:min(100vw, calc(100vh * 16 / 9));
-    aspect-ratio:16 / 9;
-    background:url("https://archivos-self.vercel.app/Site-FFA-V2_Vista%201.jpg") center / 100% 100% no-repeat;
-    container-type:inline-size;
-    overflow:hidden;
+    width:100%;
+    height:100%;
+    max-width: 1600px;
+    max-height: 900px;
+    aspect-ratio: 16 / 9;
+    background: url("https://archivos-self.vercel.app/Site-FFA-V2_Vista%201.jpg") center / 100% 100% no-repeat;
+    container-type: inline-size;
+    overflow: hidden;
+  }
+
+  /* Vista de celular forzada por JavaScript para evitar bloqueos de Eventtia */
+  .stage.mobile-view {
+    aspect-ratio: 9 / 16 !important;
+    background: url("https://archivos-self.vercel.app/Site-FFA-Vista%201-Celular.jpg") center / 100% 100% no-repeat !important;
   }
 
   .counter { position:absolute; inset:0; pointer-events:none; }
@@ -51,22 +60,6 @@
   }
   .footer.party { animation:pulse 1s ease-in-out infinite; color:#ffe14d; }
   @keyframes pulse { 50% { color:#ff4fd8; } }
-
-  /* Adaptación automática para Celular / Pantallas verticales sin bordes morados */
-  @media (max-width: 768px), (orientation: portrait) {
-    .stage {
-      width: 100% !important;
-      max-width: 100% !important;
-      height: auto !important;
-      aspect-ratio: 9 / 16 !important;
-      background: url("https://archivos-self.vercel.app/Site-FFA-Vista%201-Celular.jpg") center / 100% 100% no-repeat !important;
-    }
-    
-    /* Baja y escala el contador a su posición correcta en la imagen de celular */
-    .counter, .footer {
-      transform: translateY(48cqw) scale(1.15);
-    }
-  }
 </style>
 </head>
 <body>
@@ -76,6 +69,20 @@
 </div>
 
 <script>
+  // Detección inteligente por JS para cambiar a móvil si el ancho es menor a 768px o la pantalla es vertical
+  function checkMobile() {
+    const stage = document.getElementById('stage');
+    if (window.innerWidth <= 768 || window.innerHeight > window.innerWidth) {
+      stage.classList.add('mobile-view');
+    } else {
+      stage.classList.remove('mobile-view');
+    }
+  }
+  window.addEventListener('resize', checkMobile);
+  window.addEventListener('DOMContentLoaded', checkMobile);
+  // Forzar comprobación inmediata al cargar
+  checkMobile();
+
   const TARGET = new Date('2026-12-10T14:00:00-06:00').getTime();
 
   const COLS = [
