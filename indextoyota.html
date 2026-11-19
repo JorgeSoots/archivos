@@ -1,53 +1,44 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#f3e3d3">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>DTM 25 Años – Convención 2027</title>
+
   <style>
-    html,
-    body {
-      width: 100%;
-      height: 100%;
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
       overflow: hidden;
       background: #f3e3d3;
     }
 
-    .cover,
-    .cover img {
-      display: block;
+    .portada {
+      position: fixed;
+      inset: 0;
       width: 100%;
-      width: 100vw;
       height: 100%;
-      height: 100vh;
-      height: 100dvh;
-    }
-
-    .cover img {
+      display: block;
       object-fit: cover;
-      /* Encuadre de la portada horizontal original */
       object-position: 52% 40%;
-    }
-
-    @media screen and (max-width: 768px) {
-      .cover img {
-        /* En celular se utiliza la portada vertical */
-        object-position: center center;
-      }
     }
   </style>
 </head>
+
 <body>
-  <picture class="cover">
-   <source
-      media="(max-width: 768px)"
-      srcset="https://archivos-self.vercel.app/Portada%20vertical%20ES%20-%201080x1920.png">
-    <img
-      src="https://archivos-self.vercel.app/Portada%20escritorio%20ES%20-%201920x1080.png"
-      alt="DTM 25 años – Convención 2027">
-  </picture>
+
+  <img
+    class="portada"
+    src="https://archivos-self.vercel.app/Portada%20escritorio%20ES%20-%201920x1080.png"
+    alt="DTM 25 años – Convención 2027"
+  >
+
 </body>
 </html>
