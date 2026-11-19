@@ -55,13 +55,14 @@
   .menubar a.off{cursor:default;opacity:.55}
   .menubar a.off:hover{background:var(--gris);color:#000}
 
-  /* ====== Barra de dirección ====== */
-  .addressbar{display:flex;align-items:stretch;gap:12px;padding:6px 6px 10px;border-top:2px solid var(--sombra);
+  /* ====== Barra de correo, como en la nueva referencia ====== */
+  .addressbar{display:flex;align-items:stretch;gap:8px;padding:6px 6px 10px;border-top:2px solid var(--sombra);
     box-shadow:inset 0 1px 0 var(--blanco)}
-  .addressbar label{display:flex;align-items:center;padding:0 12px 0 46px;font-size:20px}
-  .addressbar .field{flex:1;background:#fff;display:flex;align-items:center;padding:0 12px;font-size:16px;
-    min-height:46px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#333}
-  .btn{background:var(--gris);font:400 20px var(--ui);padding:0 28px;min-height:52px;cursor:pointer;color:#000}
+  .addressbar label{display:flex;align-items:center;justify-content:center;flex:0 0 136px;padding:0 10px;font-size:20px}
+  .addressbar .field{flex:1;min-width:0;background:#fff;display:block;padding:0 12px;font:16px var(--ui);
+    min-height:54px;color:#222;outline-offset:-3px}
+  .addressbar .field::placeholder{color:#777;opacity:1}
+  .btn{flex:0 0 342px;background:var(--gris);font:400 20px var(--ui);padding:0 18px;min-height:54px;cursor:pointer;color:#000;white-space:nowrap}
   .btn:active{border-color:var(--negro) var(--blanco) var(--blanco) var(--negro);box-shadow:inset 1px 1px 0 var(--sombra)}
 
   /* ====== Área de contenido ====== */
@@ -84,10 +85,15 @@
   .wordart .l7{font-size:calc(66*var(--u));transform:translateY(calc(2*var(--u)))}
   .wordart .l8{font-size:calc(68*var(--u));transform:translateY(calc(8*var(--u)))}
 
+  /* Título ALÍSTATE con letras escalonadas, como el WordArt original */
+  .wordart.alistate{height:96px;letter-spacing:-1px}
+  .tagline{font-size:20px;line-height:1.35;padding-top:12px;color:#111}
+  .tagline em{font-style:normal;color:inherit}
+
   .viewport{flex:1;min-height:0;position:relative}
   .viewport iframe{position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
 
-  /* ====== Barra de estado ====== */
+  /* ====== Barra de estado original ====== */
   .statusbar{display:flex;gap:4px;padding:6px 4px;font-size:15px}
   .statusbar div{padding:4px 10px}
   .statusbar .grow{flex:1}
@@ -97,12 +103,14 @@
     .titlebar h1{font-size:16px}
     .controls span{width:26px;height:24px}
     .menubar{font-size:17px;gap:8px 10px;padding:12px 14px}
-    .addressbar label{display:none}
-    .addressbar .field{display:none}
-    .btn{flex:1;font-size:17px;min-height:46px}
+    .addressbar{display:grid;grid-template-columns:82px minmax(0,1fr);gap:6px;padding:6px}
+    .addressbar label{display:flex;flex:auto;padding:0 6px;font-size:15px;min-height:44px}
+    .addressbar .field{display:block;width:100%;min-height:44px;font-size:15px}
+    .btn{grid-column:1 / -1;width:100%;min-width:0;font-size:16px;min-height:46px}
     .content{border-left-width:6px;border-top-width:6px;margin-right:0}
     .header{flex-direction:column;gap:6px;padding:12px 16px}
     .wordart{--u:.72px;height:72px}
+    .wordart.alistate{height:72px}
     .tagline{font-size:16px;padding-top:0}
     .statusbar{font-size:13px}
   }
@@ -205,25 +213,27 @@
 
   <!-- Menú: data-url = página que se abre dentro del marco (vacío = desactivado) -->
   <nav class="menubar">
-    <a data-url="https://live.eventtia.com/es/uri-621c486e-8ab3-4/Page-2"><u>R</u>egístrate</a>
     <a data-inline="inspirate"><u>I</u>nspírate</a>
     <a data-inline="info"><u>I</u>nformación del evento</a>
   </nav>
 
-  <!-- Barra de dirección -->
+  <!-- Barra de correo y continuación de inscripción -->
   <div class="addressbar">
-    <label for="addr">Dirección:</label>
-    <div class="field sunken" id="addr"></div>
-    <button class="btn raised" id="go">Continúa con tu inscripción</button>
+    <label for="emailInput">Correo:</label>
+    <!-- Campo visual/editable de correo. No se transmite automáticamente a Eventtia:
+         para eso hace falta confirmar el parámetro de prellenado admitido por el formulario. -->
+    <input class="field sunken" id="emailInput" type="email" inputmode="email"
+      autocomplete="email" aria-label="Correo electrónico" placeholder="">
+    <button class="btn raised" id="go" type="button">Continúa con tu inscripción</button>
   </div>
 
   <!-- Contenido -->
   <main class="content">
     <div class="header">
-      <div class="wordart" aria-label="Registro">
-        <span class="l1">R</span><span class="l2">E</span><span class="l3">G</span><span class="l4">I</span><span class="l5">S</span><span class="l6">T</span><span class="l7">R</span><span class="l8">O</span>
+      <div class="wordart alistate" aria-label="Alístate">
+        <span class="l1">A</span><span class="l2">L</span><span class="l3">Í</span><span class="l4">S</span><span class="l5">T</span><span class="l6">A</span><span class="l7">T</span><span class="l8">E</span>
       </div>
-      <p class="tagline"><em>Completa el registro.</em> No te pierdas la experiencia de viajar en el tiempo.</p>
+      <p class="tagline">No te pierdas la experiencia de viajar en el tiempo.</p>
     </div>
     <div class="viewport sunken">
       <iframe id="frame" name="contenido" title="Formulario de registro"
@@ -232,7 +242,7 @@
     </div>
   </main>
 
-  <!-- Barra de estado -->
+  <!-- Barra de estado original -->
   <footer class="statusbar">
     <div class="sunken grow" id="status">Listo</div>
     <div class="sunken">Internet</div>
@@ -249,7 +259,6 @@
   const FORM_URL = 'https://live.eventtia.com/es/uri-621c486e-8ab3-4/Page-2';
 
   const frame  = document.getElementById('frame');
-  const addr   = document.getElementById('addr');
   const status = document.getElementById('status');
   const fsOverlay = document.getElementById('fsOverlay');
   const fsFrame   = document.getElementById('fsFrame');
@@ -271,14 +280,12 @@
 
   function openPage(url){
     status.textContent = 'Abriendo página…';
-    addr.textContent = url;
     frame.removeAttribute('srcdoc');
     frame.src = url;
   }
 
   function openInline(label, docId){
     status.textContent = label;
-    addr.textContent = label;
     try {
       fsFrame.srcdoc = decodeInlineDoc(docId);
       fsOverlay.classList.add('show');
@@ -320,9 +327,13 @@
   window.goToRegistro = function(){ closeFullscreen(); openPage(FORM_URL); };
 
   frame.addEventListener('load', () => { status.textContent = 'Listo'; });
-  addr.textContent = FORM_URL;
 
-  document.getElementById('go').addEventListener('click', () => openPage(FORM_URL));
+  document.getElementById('go').addEventListener('click', () => {
+    // El correo queda disponible en el campo; el formulario oficial sigue siendo
+    // el encargado de capturar y procesar los datos del registro en Eventtia.
+    openPage(FORM_URL);
+    document.querySelector('.viewport').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  });
   document.querySelectorAll('.menubar a').forEach(a => {
     const inline = a.dataset.inline;
     const url = a.dataset.url;
